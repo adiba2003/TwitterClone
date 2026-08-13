@@ -1,83 +1,25 @@
 ﻿namespace TwitterClone.Domain.Entities
 {
-    public class Notification
+    public class Notification : BaseEntity
     {
-        private Guid _id;
-        private Guid _receiverId;
-        private Guid? _senderId;
-        private string _type;
-        private string _message;
-        private Guid? _relatedTweetId;
-        private bool _isRead;
-        private DateTime _createdAt;
-        private DateTime? _readAt;
+        public Guid ReceiverId { get; private set; }
+        public Guid? SenderId { get; private set; }
+        public string Type { get; private set; }
+        public string Message { get; private set; }
+        public Guid? RelatedTweetId { get; private set; }
+        public bool IsRead { get; private set; }
+        public DateTime? ReadAt { get; private set; }
 
         public Notification(
             Guid receiverId,
             string type,
             string message)
+            : base(Guid.NewGuid(), receiverId)
         {
-            _id = Guid.NewGuid();
-            _receiverId = receiverId;
-            _type = type;
-            _message = message;
-            _isRead = false;
-            _createdAt = DateTime.UtcNow;
-        }
-
-        public Guid Id
-        {
-            get { return _id; }
-        }
-
-        public Guid ReceiverId
-        {
-            get { return _receiverId; }
-        }
-
-        public Guid? SenderId
-        {
-            get { return _senderId; }
-            set { _senderId = value; }
-        }
-
-        public string Type
-        {
-            get { return _type; }
-            set { _type = value; }
-        }
-
-        public string Message
-        {
-            get { return _message; }
-            set { _message = value; }
-        }
-
-        public Guid? RelatedTweetId
-        {
-            get { return _relatedTweetId; }
-            set { _relatedTweetId = value; }
-        }
-
-        public bool IsRead
-        {
-            get { return _isRead; }
-        }
-
-        public DateTime CreatedAt
-        {
-            get { return _createdAt; }
-        }
-
-        public DateTime? ReadAt
-        {
-            get { return _readAt; }
-        }
-
-        public void MarkAsRead()
-        {
-            _isRead = true;
-            _readAt = DateTime.UtcNow;
+            ReceiverId = receiverId;
+            Type = type;
+            Message = message;
+            IsRead = false;
         }
     }
 }
