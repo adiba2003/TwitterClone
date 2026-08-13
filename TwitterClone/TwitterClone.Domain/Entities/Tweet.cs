@@ -2,23 +2,59 @@
 {
     public class Tweet : BaseEntity
     {
-        public Guid AuthorId { get; private set; }
-        public string Content { get; private set; }
-        public string? MediaUrl { get; private set; }
-        public bool IsEdited { get; private set; }
-        public bool IsDeleted { get; private set; }
-        public Guid? ReplyToTweetId { get; private set; }
-        public Guid? QuotedTweetId { get; private set; }
+        private Guid _userId;
+        private string _content;
+        private bool _isEdited;
+        private bool _isDeleted;
+
+        public Tweet() : base(Guid.NewGuid())
+        {
+
+        }
 
         public Tweet(
-            Guid authorId,
+            Guid userId,
             string content)
-            : base(Guid.NewGuid(), authorId)
+            : this()
         {
-            AuthorId = authorId;
-            Content = content;
-            IsEdited = false;
-            IsDeleted = false;
+            _userId = userId;
+            _content = content;
+        }
+
+        public Guid UserId
+        {
+            get { return _userId; }
+            set { _userId = value; }
+        }
+
+        public string Content
+        {
+            get { return _content; }
+            set { _content = value; }
+        }
+
+        public bool IsEdited
+        {
+            get { return _isEdited; }
+            set { _isEdited = value; }
+        }
+
+        public bool IsDeleted
+        {
+            get { return _isDeleted; }
+            set { _isDeleted = value; }
+        }
+
+        public virtual string GetTweetType()
+        {
+            return "Tweet";
+        }
+
+        public override string DescribeRecord()
+        {
+            var baseRecord = base.DescribeRecord();
+
+            return $"{baseRecord}, UserId: {UserId}, Content: {Content}, IsEdited: {IsEdited}, IsDeleted: {IsDeleted}, TweetType: {GetTweetType()}";
         }
     }
 }

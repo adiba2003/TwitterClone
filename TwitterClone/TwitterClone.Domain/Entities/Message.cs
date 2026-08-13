@@ -2,25 +2,67 @@
 {
     public class Message : BaseEntity
     {
-        public Guid SenderId { get; private set; }
-        public Guid ReceiverId { get; private set; }
-        public string Content { get; private set; }
-        public bool IsRead { get; private set; }
-        public DateTime SentAt { get; private set; }
-        public DateTime? ReadAt { get; private set; }
-        public DateTime? EditedAt { get; private set; }
+        private Guid _senderId;
+        private Guid _receiverId;
+        private DateTime _sentAt;
+        private bool _isRead;
+        private DateTime? _readAt;
+
+        public Message() : base(Guid.NewGuid())
+        {
+            _sentAt = DateTime.UtcNow;
+            _isRead = false;
+        }
 
         public Message(
             Guid senderId,
-            Guid receiverId,
-            string content)
-            : base(Guid.NewGuid(), senderId)
+            Guid receiverId)
+            : this()
         {
-            SenderId = senderId;
-            ReceiverId = receiverId;
-            Content = content;
-            IsRead = false;
-            SentAt = DateTime.UtcNow;
+            _senderId = senderId;
+            _receiverId = receiverId;
+        }
+
+        public Guid SenderId
+        {
+            get { return _senderId; }
+            set { _senderId = value; }
+        }
+
+        public Guid ReceiverId
+        {
+            get { return _receiverId; }
+            set { _receiverId = value; }
+        }
+
+        public DateTime SentAt
+        {
+            get { return _sentAt; }
+            set { _sentAt = value; }
+        }
+
+        public bool IsRead
+        {
+            get { return _isRead; }
+            set { _isRead = value; }
+        }
+
+        public DateTime? ReadAt
+        {
+            get { return _readAt; }
+            set { _readAt = value; }
+        }
+
+        public virtual string GetMessageType()
+        {
+            return "Message";
+        }
+
+        public override string DescribeRecord()
+        {
+            var baseRecord = base.DescribeRecord();
+
+            return $"{baseRecord}, SenderId: {SenderId}, ReceiverId: {ReceiverId}, SentAt: {SentAt}, IsRead: {IsRead}, ReadAt: {ReadAt}, MessageType: {GetMessageType()}";
         }
     }
 }

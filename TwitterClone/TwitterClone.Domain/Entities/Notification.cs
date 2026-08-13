@@ -2,24 +2,54 @@
 {
     public class Notification : BaseEntity
     {
-        public Guid ReceiverId { get; private set; }
-        public Guid? SenderId { get; private set; }
-        public string Type { get; private set; }
-        public string Message { get; private set; }
-        public Guid? RelatedTweetId { get; private set; }
-        public bool IsRead { get; private set; }
-        public DateTime? ReadAt { get; private set; }
+        private Guid _userId;
+        private string _type;
+        private string _message;
+        private bool _isRead;
+
+        public Notification(string notificationType)
+            : base(Guid.NewGuid())
+        {
+            _type = notificationType;
+        }
 
         public Notification(
-            Guid receiverId,
-            string type,
-            string message)
-            : base(Guid.NewGuid(), receiverId)
+            Guid userId,
+            string notificationType)
+            : this(notificationType)
         {
-            ReceiverId = receiverId;
-            Type = type;
-            Message = message;
-            IsRead = false;
+            _userId = userId;
+        }
+
+        public Guid UserId
+        {
+            get { return _userId; }
+            set { _userId = value; }
+        }
+
+        public string Type
+        {
+            get { return _type; }
+            set { _type = value; }
+        }
+
+        protected string Message
+        {
+            get { return _message; }
+            set { _message = value; }
+        }
+
+        public bool IsRead
+        {
+            get { return _isRead; }
+            set { _isRead = value; }
+        }
+
+        public override string DescribeRecord()
+        {
+            var baseRecord = base.DescribeRecord();
+
+            return $"{baseRecord}, UserId: {UserId}, Type: {Type}, Message: {Message}, IsRead: {IsRead}";
         }
     }
 }

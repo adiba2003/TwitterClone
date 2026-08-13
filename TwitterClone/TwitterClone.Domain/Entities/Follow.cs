@@ -2,21 +2,55 @@
 {
     public class Follow : BaseEntity
     {
-        public Guid FollowerId { get; private set; }
-        public Guid FollowingId { get; private set; }
-        public bool IsActive { get; private set; }
-        public DateTime FollowedAt { get; private set; }
-        public DateTime? UnfollowedAt { get; private set; }
+        private Guid _followerId;
+        private Guid _followingId;
+        private bool _isActive;
+        private DateTime _followedAt;
+
+        public Follow() : base(Guid.NewGuid())
+        {
+            _isActive = true;
+            _followedAt = DateTime.UtcNow;
+        }
 
         public Follow(
             Guid followerId,
             Guid followingId)
-            : base(Guid.NewGuid(), followerId)
+            : this()
         {
-            FollowerId = followerId;
-            FollowingId = followingId;
-            IsActive = true;
-            FollowedAt = DateTime.UtcNow;
+            _followerId = followerId;
+            _followingId = followingId;
+        }
+
+        public Guid FollowerId
+        {
+            get { return _followerId; }
+            set { _followerId = value; }
+        }
+
+        public Guid FollowingId
+        {
+            get { return _followingId; }
+            set { _followingId = value; }
+        }
+
+        public bool IsActive
+        {
+            get { return _isActive; }
+            set { _isActive = value; }
+        }
+
+        public DateTime FollowedAt
+        {
+            get { return _followedAt; }
+            set { _followedAt = value; }
+        }
+
+        public override string DescribeRecord()
+        {
+            var baseRecord = base.DescribeRecord();
+
+            return $"{baseRecord}, FollowerId: {FollowerId}, FollowingId: {FollowingId}, IsActive: {IsActive}, FollowedAt: {FollowedAt}";
         }
     }
 }

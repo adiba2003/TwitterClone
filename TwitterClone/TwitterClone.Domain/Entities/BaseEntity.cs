@@ -8,11 +8,15 @@
         public Guid CreatedBy { get; private set; }
         public Guid? ModifiedBy { get; private set; }
 
-        public BaseEntity(Guid id, Guid createdBy)
+        public BaseEntity(Guid id)
         {
             Id = id;
-            CreatedBy = createdBy;
             CreatedAt = DateTime.UtcNow;
+        }
+
+        public virtual string DescribeRecord()
+        {
+            return $"BaseEntity: Id: {Id}, CreatedAt: {CreatedAt}, ModifiedAt: {ModifiedAt}, CreatedBy: {CreatedBy}, ModifiedBy: {ModifiedBy}";
         }
     }
 }
